@@ -5,9 +5,22 @@ package File::ShardDir;
 
 our $VERSION = '0.01';
 
-# ABSTRACT: 
-
+# ABSTRACT:
+ 
 my %FORMAT;
+
+sub new {
+    my ( $class, $format ) = @_;
+
+    return bless { format => $format, _sub => _create_format_sub($format) },
+        $class;
+}
+
+sub shard {
+    my ( $self, $filename ) = @_;
+
+    return $self->{_sub}->($filename);
+}
 
 sub shard_dir {
     my $filename   = shift;
